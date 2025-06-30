@@ -3,13 +3,12 @@ import { Inter } from 'next/font/google';
 
 import './globals.css';
 
-import AuthProvider from '../components/AuthProvider';
 import { ThemeProvider } from '../components/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'MoonTV',
+  title: process.env.NEXT_PUBLIC_SITE_NAME || 'MoonTV',
   description: '影视聚合',
   manifest: '/manifest.json',
 };
@@ -38,7 +37,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <AuthProvider>{children}</AuthProvider>
+          {children}
         </ThemeProvider>
       </body>
     </html>
