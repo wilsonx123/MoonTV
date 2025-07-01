@@ -80,6 +80,10 @@
     "ikun": {
       "api": "https://ikunzyapi.com/api.php/provide/vod",
       "name": "iKun资源"
+    },
+    "yhzy": {
+      "api": "https://yhzy.cc/api.php/provide/vod",
+      "name": "樱花资源"
     }
   }
 }
