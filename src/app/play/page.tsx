@@ -123,13 +123,13 @@ function PlayPageClient() {
   // 上次使用的音量，默认 0.7
   const lastVolumeRef = useRef<number>(0.7);
 
-  // 新增：去广告开关（从 localStorage 继承，默认取环境变量）
+  // 新增：去广告开关（从 localStorage 继承，默认 true）
   const [blockAdEnabled, _setBlockAdEnabled] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
       const v = localStorage.getItem('enable_blockad');
       if (v !== null) return v === 'true';
     }
-    return process.env.NEXT_PUBLIC_ENABLE_BLOCKAD === 'true';
+    return true;
   });
 
   // 同步最新值到 refs
@@ -1195,24 +1195,6 @@ function PlayPageClient() {
         // 调用父类构造函数
         // @ts-ignore
         super(config);
-
-        // 监听 Hls 错误事件，捕获 bufferStalledError 并尝试跳过
-        this.on(Hls.Events.ERROR, (_evt: any, data: any) => {
-          if (
-            data?.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR ||
-            data?.details === Hls.ErrorDetails.BUFFER_SEEK_OVER_HOLE
-          ) {
-            try {
-              const media = (this as any).media as HTMLMediaElement | undefined;
-              if (media && !media.seeking) {
-                // 前跳 1 秒，跳过当前卡顿的分片
-                media.currentTime = media.currentTime + 1;
-              }
-            } catch (err) {
-              console.warn('尝试跳过卡顿分片失败:', err);
-            }
-          }
-        });
       }
 
       attachMedia(media: HTMLMediaElement): void {
