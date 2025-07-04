@@ -154,11 +154,11 @@ export default function VideoCard({
   return (
     <Link
       href={`/detail?source=${source}&id=${id}&title=${encodeURIComponent(
-        title
+        title.trim()
       )}${year ? `&year=${year}` : ''}${from ? `&from=${from}` : ''}`}
     >
       <div
-        className={`group relative w-full rounded-lg bg-transparent/0 flex flex-col cursor-pointer transition-all duration-300 ease-in-out ${
+        className={`group relative w-full rounded-lg bg-transparent flex flex-col cursor-pointer transition-all duration-300 ease-in-out ${
           isDeleting ? 'opacity-0 scale-90' : ''
         }`}
       >

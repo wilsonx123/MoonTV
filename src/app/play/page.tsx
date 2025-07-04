@@ -41,7 +41,10 @@ import {
   savePlayRecord,
   toggleFavorite,
 } from '@/lib/db.client';
-import { type VideoDetail, fetchVideoDetail } from '@/lib/fetchVideoDetail';
+import {
+  type VideoDetail,
+  fetchVideoDetail,
+} from '@/lib/fetchVideoDetail.client';
 import { SearchResult } from '@/lib/types';
 
 // 扩展 HTMLVideoElement 类型以支持 hls 属性
@@ -274,7 +277,7 @@ function PlayPageClient() {
         const detailData = await fetchVideoDetail({
           source: currentSource,
           id: currentId,
-          fallbackTitle: videoTitle,
+          fallbackTitle: videoTitle.trim(),
           fallbackYear: videoYear,
         });
 
@@ -531,7 +534,7 @@ function PlayPageClient() {
 
     try {
       const response = await fetch(
-        `/api/search?q=${encodeURIComponent(query)}`
+        `/api/search?q=${encodeURIComponent(query.trim())}`
       );
       if (!response.ok) {
         throw new Error('搜索失败');
@@ -614,7 +617,7 @@ function PlayPageClient() {
       const newDetail = await fetchVideoDetail({
         source: newSource,
         id: newId,
-        fallbackTitle: newTitle,
+        fallbackTitle: newTitle.trim(),
         fallbackYear: videoYear,
       });
 
@@ -1100,7 +1103,7 @@ function PlayPageClient() {
             onClick={() => {
               if (videoTitle) {
                 window.location.href = `/aggregate?q=${encodeURIComponent(
-                  videoTitle
+                  videoTitle.trim()
                 )}${videoYear ? `&year=${encodeURIComponent(videoYear)}` : ''}`;
               } else {
                 window.location.href = '/';
@@ -1125,7 +1128,7 @@ function PlayPageClient() {
               // 返回选源页
               if (videoTitle) {
                 window.location.href = `/aggregate?q=${encodeURIComponent(
-                  videoTitle
+                  videoTitle.trim()
                 )}${videoYear ? `&year=${encodeURIComponent(videoYear)}` : ''}`;
               } else {
                 window.location.href = '/';
@@ -1436,7 +1439,6 @@ function PlayPageClient() {
           noGestures={true}
           slots={{
             googleCastButton: null,
-            pipButton: null,
             settingsMenu: null,
             captionButton: null,
             muteButton: null, // 隐藏静音按钮
@@ -1497,7 +1499,7 @@ function PlayPageClient() {
             beforePlayButton: (
               <>
                 {showSkipButtons && (
-                  <SeekButton className='vds-button' seconds={10}>
+                  <SeekButton className='vds-button' seconds={-10}>
                     <SeekBackward10Icon className='vds-icon' />
                   </SeekButton>
                 )}
@@ -1917,7 +1919,6 @@ const FavoriteIcon = ({ filled }: { filled: boolean }) => {
 
 // 新增：去广告图标组件
 const AdBlockIcon = ({ enabled }: { enabled: boolean }) => {
-  const color = enabled ? '#22c55e' : '#ffffff'; // Tailwind green-500 or white
   return (
     <svg
       className='h-6 w-6 vds-icon' // 略微放大尺寸
@@ -1932,20 +1933,21 @@ const AdBlockIcon = ({ enabled }: { enabled: boolean }) => {
         fontWeight='bold'
         textAnchor='middle'
         dominantBaseline='middle'
-        fill={color}
+        fill='#ffffff'
       >
         AD
       </text>
-      {/* 斜线 */}
-      <line
-        x1='4'
-        y1='4'
-        x2='28'
-        y2='28'
-        stroke={color}
-        strokeWidth='4'
-        strokeLinecap='round'
-      />
+      {enabled && (
+        <line
+          x1='4'
+          y1='4'
+          x2='28'
+          y2='28'
+          stroke='#ffffff'
+          strokeWidth='4'
+          strokeLinecap='round'
+        />
+      )}
     </svg>
   );
 };

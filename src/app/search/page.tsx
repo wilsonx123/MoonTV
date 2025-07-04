@@ -48,7 +48,13 @@ function SearchPageClient() {
       arr.push(item);
       map.set(key, arr);
     });
-    return map;
+    return Array.from(map.entries()).sort((a, b) => {
+      return a[1][0].year === b[1][0].year
+        ? a[0].localeCompare(b[0])
+        : a[1][0].year > b[1][0].year
+        ? -1
+        : 1;
+    });
   }, [searchResults]);
 
   useEffect(() => {
@@ -78,10 +84,18 @@ function SearchPageClient() {
     try {
       setIsLoading(true);
       const response = await fetch(
-        `/api/search?q=${encodeURIComponent(query)}`
+        `/api/search?q=${encodeURIComponent(query.trim())}`
       );
       const data = await response.json();
-      setSearchResults(data.results);
+      setSearchResults(
+        data.results.sort((a: SearchResult, b: SearchResult) => {
+          return a.year === b.year
+            ? a.title.localeCompare(b.title)
+            : a.year > b.year
+            ? -1
+            : 1;
+        })
+      );
       setShowResults(true);
     } catch (error) {
       setSearchResults([]);
@@ -92,17 +106,20 @@ function SearchPageClient() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!searchQuery.trim()) return;
+    const trimmed = searchQuery.trim().replace(/\s+/g, ' ');
+    if (!trimmed) return;
 
+    // 回显搜索框
+    setSearchQuery(trimmed);
     setIsLoading(true);
     setShowResults(true);
 
-    router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
     // 直接发请求
-    fetchSearchResults(searchQuery);
+    fetchSearchResults(trimmed);
 
     // 保存到搜索历史
-    addSearchHistory(searchQuery).then(async () => {
+    addSearchHistory(trimmed).then(async () => {
       const history = await getSearchHistory();
       setSearchHistory(history);
     });
@@ -165,19 +182,17 @@ function SearchPageClient() {
                 className='justify-start grid grid-cols-3 gap-x-2 gap-y-14 sm:gap-y-20 px-0 sm:px-2 sm:grid-cols-[repeat(auto-fill,_minmax(11rem,_1fr))] sm:gap-x-8'
               >
                 {viewMode === 'agg'
-                  ? Array.from(aggregatedResults.entries()).map(
-                      ([mapKey, group]) => {
-                        return (
-                          <div key={`agg-${mapKey}`} className='w-full'>
-                            <AggregateCard
-                              items={group}
-                              query={searchQuery}
-                              year={group[0].year}
-                            />
-                          </div>
-                        );
-                      }
-                    )
+                  ? aggregatedResults.map(([mapKey, group]) => {
+                      return (
+                        <div key={`agg-${mapKey}`} className='w-full'>
+                          <AggregateCard
+                            items={group}
+                            query={searchQuery}
+                            year={group[0].year}
+                          />
+                        </div>
+                      );
+                    })
                   : searchResults.map((item) => (
                       <div
                         key={`all-${item.source}-${item.id}`}
@@ -225,7 +240,9 @@ function SearchPageClient() {
                     <button
                       onClick={() => {
                         setSearchQuery(item);
-                        router.push(`/search?q=${encodeURIComponent(item)}`);
+                        router.push(
+                          `/search?q=${encodeURIComponent(item.trim())}`
+                        );
                       }}
                       className='px-4 py-2 bg-gray-500/10 hover:bg-gray-300 rounded-full text-sm text-gray-700 transition-colors duration-200 dark:bg-gray-700/50 dark:hover:bg-gray-600 dark:text-gray-300'
                     >

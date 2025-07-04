@@ -53,12 +53,14 @@ const DemoCard = ({ id, title, poster, rate, type }: DemoCardProps) => {
   const imgRef = useRef<HTMLImageElement>(null);
 
   const handleClick = () => {
-    router.push(`/aggregate?q=${encodeURIComponent(title)}&type=${type}`);
+    router.push(
+      `/aggregate?q=${encodeURIComponent(title.trim())}&type=${type}`
+    );
   };
 
   return (
     <div
-      className='group relative w-full rounded-lg bg-transparen flex flex-col cursor-pointer transition-all duration-300 ease-in-out'
+      className='group relative w-full rounded-lg bg-transparent flex flex-col cursor-pointer transition-all duration-300 ease-in-out'
       onClick={handleClick}
     >
       {/* 海报图片区域 */}
