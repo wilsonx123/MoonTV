@@ -85,5 +85,62 @@
       "api": "https://zy.xmm.hk/api.php/provide/vod",
       "name": "小猫咪资源"
     }
-  }
+  },
+  "custom_category": [
+    {
+      "name": "動作",
+      "type": "movie",
+      "query": "动作"
+    },
+    {
+      "name": "喜劇",
+      "type": "movie",
+      "query": "喜剧"
+    },
+    {
+      "name": "愛情",
+      "type": "movie",
+      "query": "爱情"
+    },
+    {
+      "name": "科幻",
+      "type": "movie",
+      "query": "科幻"
+    },
+    {
+      "name": "懸疑",
+      "type": "movie",
+      "query": "悬疑"
+    },
+    {
+      "name": "恐怖",
+      "type": "movie",
+      "query": "恐怖"
+    },
+    {
+      "name": "喜劇",
+      "type": "tv",
+      "query": "喜剧"
+    },
+    {
+      "name": "科幻",
+      "type": "tv",
+      "query": "科幻"
+    },
+    {
+      "name": "犯罪",
+      "type": "tv",
+      "query": "犯罪"
+    },
+    {
+      "name": "愛情",
+      "type": "tv",
+      "query": "爱情"
+    },
+    {
+      "name": "港劇",
+      "type": "tv",
+      "query": "港剧"
+    }
+  ]
 }
