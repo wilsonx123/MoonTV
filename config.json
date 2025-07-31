@@ -118,29 +118,24 @@
       "query": "恐怖"
     },
     {
-      "name": "喜劇",
-      "type": "tv",
-      "query": "喜剧"
-    },
-    {
-      "name": "科幻",
-      "type": "tv",
-      "query": "科幻"
-    },
-    {
-      "name": "犯罪",
-      "type": "tv",
-      "query": "犯罪"
-    },
-    {
-      "name": "愛情",
-      "type": "tv",
-      "query": "爱情"
-    },
-    {
       "name": "港劇",
       "type": "tv",
       "query": "港剧"
+    },
+    {
+      "name": "古裝",
+      "type": "tv",
+      "query": "古装"
+    },
+    {
+      "name": "奇幻",
+      "type": "tv",
+      "query": "奇幻"
+    },
+    {
+      "name": "懸疑",
+      "type": "tv",
+      "query": "悬疑"
     }
   ]
 }
