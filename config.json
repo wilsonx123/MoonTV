@@ -118,6 +118,11 @@
       "query": "恐怖"
     },
     {
+      "name": "治癒",
+      "type": "movie",
+      "query": "治愈"
+    },
+    {
       "name": "港劇",
       "type": "tv",
       "query": "港剧"
